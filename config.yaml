@@ -1,0 +1,160 @@
+# ── Meridian Capital Partners · config.yaml ──────────────────────────────
+# All tunable parameters for the entire LS equity fund system.
+# Layer 1 uses only the [data] section.
+
+# ── General ────────────────────────────────────────────────────────────
+fund_name: "Meridian Capital Partners"
+project_dir: "ls_equity_fund"
+db_path: "cache/meridian.db"
+log_level: "INFO"
+
+# ── Data Layer (L1) ────────────────────────────────────────────────────
+data:
+  lookback_years: 3
+  refresh_interval_hours: 24
+  universe:
+    source_url: "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+    cache_path: "cache/sp500.csv"
+    refresh_days: 7
+  market_data:
+    incremental: true
+    max_retries: 3
+    retry_delay_sec: 5
+  fundamentals:
+    max_retries: 3
+    derived_ratios: true
+  sec_edgar:
+    user_agent: "Meridian Capital Partners research@meridian.example.com"
+    filing_types: ["10-K", "10-Q", "8-K"]
+    lookback_years: 3
+    max_concurrent: 5
+    cache_dir: "cache/sec_filings"
+  insider:
+    lookback_years: 2
+    cache_path: "cache/insider.csv"
+    refresh_days: 1
+  institutional:
+    lookback_years: 2
+    cache_path: "cache/institutional.csv"
+    refresh_days: 7
+
+# ── Benchmarks ─────────────────────────────────────────────────────────
+benchmarks:
+  indices: ["^GSPC", "^VIX", "SPY", "QQQ", "IWM", "DIA"]
+  bonds: ["TLT", "HYG"]
+  sector_etfs:
+    - XLK   # Technology
+    - XLF   # Financials
+    - XLV   # Healthcare
+    - XLE   # Energy
+    - XLI   # Industrials
+    - XLC   # Communication Services
+    - XLY   # Consumer Discretionary
+    - XLP   # Consumer Staples
+    - XLB   # Materials
+    - XLRE  # Real Estate
+    - XLU   # Utilities
+
+# ── Factors (L2) — placeholder ─────────────────────────────────────────
+factors:
+  enabled: false
+  weights:
+    momentum: 0.15
+    value: 0.15
+    quality: 0.15
+    growth: 0.125
+    revision: 0.10
+    short_interest: 0.075
+    insider: 0.125
+    institutional: 0.125
+
+# ── Portfolio (L4) — Portfolio Construction Configuration ─────────────────
+portfolio:
+  # General portfolio settings
+  max_positions: 40
+  max_sector_weight: 0.25
+  max_single_weight: 0.05
+  min_single_weight: 0.005
+  
+  # Conviction optimizer settings
+  conviction:
+    position_min_pct: 0.005    # 0.5% minimum position
+    position_max_pct: 0.05     # 5% maximum position
+    target_long_gross: 1.0     # 100% long exposure
+    target_short_gross: 1.0    # 100% short exposure
+    max_sector_net: 0.05       # 5% sector net limit
+    max_sector_side: 0.25      # 25% sector long/short limit
+    beta_target: 1.0           # Target portfolio beta
+    adv_lookback: 20           # 20-day ADV for liquidity
+    
+    # Transaction costs configuration
+    transaction_costs:
+      commission_bps: 0.0       # Alpaca zero commission
+      spread_cost_bps: 0.0     # Calculated from market data
+      market_impact_coefficient: 0.10
+  
+  # MVO optimizer settings
+  mvo:
+    risk_aversion: 1.0         # Risk aversion parameter λ
+    position_min_pct: 0.005    # 0.5% minimum position
+    position_max_pct: 0.05     # 5% maximum position
+    target_long_gross: 1.0     # 100% long exposure
+    target_short_gross: 1.0    # 100% short exposure
+    max_sector_net: 0.05       # 5% sector net limit
+    max_sector_side: 0.25      # 25% sector long/short limit
+    max_beta_exposure: 0.15    # 15% beta exposure limit
+    covariance_lookback: 120   # 120-day lookback for covariance
+    
+    # Transaction costs configuration
+    transaction_costs:
+      commission_bps: 0.0       # Alpaca zero commission
+      spread_cost_bps: 0.0     # Calculated from market data
+      market_impact_coefficient: 0.10
+
+# ── Risk (L5) — Risk Management Configuration ──────────────────────────
+risk:
+  # General risk settings
+  aum: 100000000              # $100M AUM
+  halt_file: "cache/halt.lock"  # Halt lock file location
+  
+  # Factor risk model settings
+  factor_model:
+    lookback_days: 120         # 120-day lookback for factor model
+    factor_weights: {}         # Custom factor weights (if different from portfolio)
+    
+  # Pre-trade check settings
+  pre_trade:
+    halt_file: "cache/halt.lock"
+    aum: 100000000             # $100M AUM
+    max_position_weight: 0.05   # 5% of AUM max position
+    max_sector_weight: 0.25    # 25% per sector max
+    max_gross_exposure: 1.65   # 165% gross exposure max
+    max_net_exposure: 0.15     # +15% net exposure max (-10% min)
+    max_beta_exposure: 0.20    # 0.20 beta exposure max
+    max_correlation: 0.80      # 80% correlation max
+
+# ── Reporting (L7) ─────────────────────────────────────────────────────
+reporting:
+  endpoint: "http://localhost:11434/api"
+  models:
+    - "phi:7b"
+  max_tokens: 1000
+  temperature: 0.7
+    min_liquidity_adv_pct: 0.05 # 5% of ADV minimum liquidity
+    
+  # Circuit breaker settings
+  circuit_breakers:
+    daily_loss_threshold_soft: -0.015   # -1.5% daily soft threshold
+    daily_loss_threshold_hard: -0.025   # -2.5% daily hard threshold
+    weekly_loss_threshold: -0.04       # -4% weekly threshold
+    drawdown_threshold: -0.08          # -8% drawdown threshold
+    single_position_threshold: 0.03     # 3% NAV single position
+    aum: 100000000                     # $100M AUM
+    halt_file: "cache/halt.lock"       # Halt lock file location
+
+# ── Execution (L6) — placeholder ───────────────────────────────────────
+execution:
+  broker: "alpaca"
+  default_order_type: "limit"
+  limit_offset_bps: 5
+  max_slippage_bps: 10

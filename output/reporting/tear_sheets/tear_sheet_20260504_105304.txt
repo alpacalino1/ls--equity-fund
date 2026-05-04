@@ -1,0 +1,26 @@
+======================================================================
+MERIDIAN CAPITAL PARTNERS — PERFORMANCE TEAR SHEET
+======================================================================
+Generated: 2026-05-04 10:53
+
+PERFORMANCE METRICS
+------------------------------
+  Total Return:     +12.5%
+  Annualized:       +15.2%
+  Volatility:       18.0%
+  Sharpe Ratio:     1.20
+  Max Drawdown:     -8.5%
+
+MONTHLY RETURNS (%)
+------------------------------
+Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Oct  Nov  Dec
+ +2.1 +1.5 -0.8 +3.2 +1.1 -2.3 +4.5 +0.9 -1.7 +3.8 +2.2 +4.1
+
+RISK METRICS
+------------------------------
+  12M Rolling Sharpe:  1.15
+  Net Beta:            0.95
+  Gross Exposure:      1.75x
+
+---
+Past performance is not necessarily indicative of future results.

@@ -1,0 +1,9 @@
+# ── .gitignore ──────────────────────────────────────────────────────────
+.env
+cache/*.db
+cache/sec_filings/
+__pycache__/
+*.pyc
+.Python
+output/*.csv
+output/*.log

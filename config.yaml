@@ -135,14 +135,21 @@ risk:
 
 # ── Reporting (L7) ─────────────────────────────────────────────────────
 reporting:
-  endpoint: "http://localhost:11434/api"
+  endpoint: "https://ollama.com"
   models:
-    - "phi:7b"
-  max_tokens: 1000
+    - "minimax-m2"
+    - "nemotron-3-super"
+    - "glm-4.6"
+    - "deepseek-v3.2"
+  max_tokens: 1200
   temperature: 0.7
-    min_liquidity_adv_pct: 0.05 # 5% of ADV minimum liquidity
-    
-  # Circuit breaker settings
+  commentary_day: "Friday"
+  sender: "Meridian Capital Partners"
+  recipient: "Limited Partners"
+  compliance_footer: "Past performance is not necessarily indicative of future results. This letter is for informational purposes only."
+
+# ── Risk (L5) continued ────────────────────────────────────────────────
+  # Circuit breaker settings (part of risk)
   circuit_breakers:
     daily_loss_threshold_soft: -0.015   # -1.5% daily soft threshold
     daily_loss_threshold_hard: -0.025   # -2.5% daily hard threshold

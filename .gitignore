@@ -1,5 +1,8 @@
 # ── .gitignore ──────────────────────────────────────────────────────────
 .env
+.venv/
+venv/
+env/
 cache/*.db
 cache/sec_filings/
 __pycache__/
@@ -7,3 +10,6 @@ __pycache__/
 .Python
 output/*.csv
 output/*.log
+*.log
+.DS_Store
+.ipynb_checkpoints/
